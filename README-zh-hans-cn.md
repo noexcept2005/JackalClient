@@ -8,7 +8,10 @@
 
 ### 只是长得像（
 
+![Image_1728470594427](https://github.com/user-attachments/assets/bb3daddc-d1e3-4a18-be64-9c4768e74c33)
+
 ### 请前往作者Q群获取，这里不提供链接
+## 196218959
 
 ### B站合集链接
 [https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082)

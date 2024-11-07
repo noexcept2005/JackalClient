@@ -8,6 +8,11 @@ English | [简体中文](./README-zh-hans-cn.md)
 
 ### Just looks like
 
+
+![Image_1728470594427](https://github.com/user-attachments/assets/bb3daddc-d1e3-4a18-be64-9c4768e74c33)
+
+
+### Join Wormwaker's QQ Fangroup to get the Client:
 ### 196218959
 
 ### Bilibili Channel Link
@@ -16,6 +21,7 @@ English | [简体中文](./README-zh-hans-cn.md)
 ### Project Start Date 2024/8/10
 
 ##### Thx 4 ur support
+
 
 ____________________________
 

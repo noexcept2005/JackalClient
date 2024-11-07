@@ -1,22 +1,21 @@
 # JackalClient
 
-English | [简体中文](./README-zh-hans-cn.md)
+[English](./README.md) | 简体中文
 
-### a free Hacker Client for WINDOWS (Partial Source Code, esp. UI)
+### 免费的 Windows 黑客端 （部分开源，尤其是界面部分）
 
-### It's not a Minecraft Ghost Client XD |O|
+### 这不是MC的纪啊 XD 哈哈哈
 
-### Just looks like
+### 只是长得像（
 
-### 196218959
+### 请前往作者Q群获取，这里不提供链接
 
-### Bilibili Channel Link
+### B站合集链接
 [https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082)
 
-### Project Start Date 2024/8/10
+### 项目开工日期 2024/8/10
 
-##### Thx 4 ur support
-
+##### 蟹蟹支持
 ____________________________
 
 Previous AD, just have a look ...qwq

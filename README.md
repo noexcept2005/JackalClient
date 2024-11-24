@@ -48,6 +48,6 @@ Intro link on Bilibili🤗
 
 Thanks for your support😆
 
-Join Wormwaker's Fangroup to obtain the latest version of the client!😛
+Join Wormwaker's QQ Group to obtain the latest version of the client!😛
 
 Any discussion about coding is welcome🤠

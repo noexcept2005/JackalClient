@@ -22,6 +22,24 @@ English | [简体中文](./README-zh-hans-cn.md)
 
 ##### Thx 4 ur support
 
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="
+      https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date&theme=dark
+    "
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="
+      https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date
+    "
+  />
+  <img
+    alt="Star History Chart"
+    src="https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date"
+  />
+</picture>
 
 ____________________________
 
@@ -52,21 +70,3 @@ Join Wormwaker's QQ Group to obtain the latest version of the client!😛
 
 Any discussion about coding is welcome🤠
 
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="
-      https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date&theme=dark
-    "
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="
-      https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date
-    "
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date"
-  />
-</picture>

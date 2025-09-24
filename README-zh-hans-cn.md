@@ -19,6 +19,26 @@
 ### 项目开工日期 2024/8/10
 
 ##### 蟹蟹支持
+
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="
+      https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date&theme=dark
+    "
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="
+      https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date
+    "
+  />
+  <img
+    alt="Star History Chart"
+    src="https://api.star-history.com/svg?repos=noexcept2005/JackalClient&type=Date"
+  />
+</picture>
+
 ____________________________
 
 Previous AD, just have a look ...qwq

@@ -8,9 +8,11 @@
 
 ### 只是长得像（
 
-![Image_1728470594427](https://github.com/user-attachments/assets/bb3daddc-d1e3-4a18-be64-9c4768e74c33)
+<img width="1280" height="760" alt="v0 6a" src="https://github.com/user-attachments/assets/e352dee6-32e3-4336-b1ee-9028d7501c6e" />
+<img width="1280" height="761" alt="hacker_style" src="https://github.com/user-attachments/assets/71e617d3-b1ad-472f-b088-d3bd478d8c28" />
 
-### 请前往作者Q群获取，这里不提供链接
+
+### 请先在B站关注[@Wormwaker]([https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525))，然后前往企鹅群获取，这里不提供链接
 ## 196218959
 
 ### B站合集链接
@@ -42,6 +44,9 @@
 ____________________________
 
 Previous AD, just have a look ...qwq
+
+<img width="1014" height="569" alt="GUI2" src="https://github.com/user-attachments/assets/7d2b7c2c-07e9-42fd-b6b5-61883f4dfa66" />
+
 
 Best Ghost Client for Windows: Using Jackal Client to Defeat Your Opponents🥰
 

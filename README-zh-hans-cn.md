@@ -12,7 +12,9 @@
 <img width="1280" height="761" alt="hacker_style" src="https://github.com/user-attachments/assets/71e617d3-b1ad-472f-b088-d3bd478d8c28" />
 
 
-### 请先在B站关注[@Wormwaker]([https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525))，然后前往企鹅群获取，这里不提供链接
+### 请先在B站关注
+[@Wormwaker](https://space.bilibili.com/3494361276877525)
+### ，然后前往企鹅群获取，这里不提供链接
 ## 196218959
 
 ### B站合集链接

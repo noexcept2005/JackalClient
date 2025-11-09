@@ -21,6 +21,14 @@ float AssessValueSmallStep(float x)
 	return x * 0.1f;
 }
 
+template<typename T>
+inline T safe_divide(T numerator, T denominator, T fallback = 0)
+{
+	return (denominator == 0) ? fallback : numerator / denominator;
+}
+
+
+
 template <typename _T>
 constexpr _T CJZAPI pow2(const _T& x)
 {
@@ -106,7 +114,7 @@ auto SinValue(T minValue, T maxValue, clock_t periodTime = 2000L, float phase0 =
 	double normalizedTime = static_cast<double>(currentTime % periodTime) / periodTime;
 
 	// 应用相位，计算正弦值并将其映射到[0, 1]
-	double sinValue = 0.5 * (1.0 + std::sin(2.0 * PI * (normalizedTime + phase0)));
+	double sinValue = 0.5 * (1.0 + sin(2.0 * PI * (normalizedTime + phase0)));
 
 	// 将正弦值映射到[minValue, maxValue]
 	return minValue + static_cast<T>((maxValue - minValue) * sinValue);
@@ -170,11 +178,11 @@ inline double CJZAPI EaseInExpo(double _x)
 {
 	return fequ(_x, 0.0f) ? 0.0 : pow(2.0, 10.0 * _x - 10.0);
 }
-inline double CJZAPI EaseInOutSine(double _x)
+inline double EaseInOutSine(double _x)
 {	//retval,_x ∈ [0,1]
 	return -(cos(PI * _x) - 1) / 2;
 }
-inline double CJZAPI EaseInOutBack(double _x)
+inline double EaseInOutBack(double _x)
 {
 	const double c1 = 1.70158;
 	const double c2 = c1 * 1.525;
@@ -186,7 +194,14 @@ inline double CJZAPI EaseOutCubic(double _x)
 {
 	return 1 - pow(1 - _x, 3);
 }
-inline double CJZAPI EaseInOutElastic(double _x)
+
+inline double CJZAPI EaseOutBack(double x) {
+	constexpr double c1 = 1.70158;
+	constexpr double c3 = c1 + 1;
+
+	return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2);
+}
+inline double EaseInOutElastic(double _x)
 {
 	const double c5 = (2 * PI) / 4.5;
 	return fequ(_x, 0.0)
@@ -219,13 +234,13 @@ inline double CJZAPI EaseInQuad(double _x)
 {
 	return _x * _x;
 }
-inline double CJZAPI EaseInOutBounce(double _x)
+inline double EaseInOutBounce(double _x)
 {
 	return _x < 0.5
 		? (1 - EaseOutBounce(1 - 2 * _x)) / 2
 		: (1 + EaseOutBounce(2 * _x - 1)) / 2;
 }
-inline double CJZAPI EaseInOutExpo(double _x)
+inline double EaseInOutExpo(double _x)
 {
 	return fequ(_x, 0.0)
 		? 0.0
@@ -238,22 +253,44 @@ inline double CJZAPI EaseInOutExpo(double _x)
 long CJZAPI RandomRange(auto Min = 0, auto Max = 32767, bool rchMin = true, bool rchMax = true) {
 	//随机数值区间
 	if (Max - Min == 0)
-		return 0;
+		return Min;
 
 	//a = random(Max);
-	long a = rand();
+	//long a = rand();
+
+	static random_device rd;  // 硬件熵源
+	static mt19937 gen(rd()); // 梅森旋转引擎
+
+	// 处理不同的区间类型
+	if (rchMin && rchMax) {     // [Min, Max]
+		uniform_int_distribution<long> dist(Min, Max);
+		return dist(gen);
+	}
+	else if (rchMin && !rchMax) { // [Min, Max)
+		uniform_int_distribution<long> dist(Min, Max - 1);
+		return dist(gen);
+	}
+	else if (!rchMin && rchMax) { // (Min, Max]
+		uniform_int_distribution<long> dist(Min + 1, Max);
+		return dist(gen);
+	}
+	else {                        // (Min, Max)
+		uniform_int_distribution<long> dist(Min + 1, Max - 1);
+		return dist(gen);
+	}
+
 
 	//g_debug_string = "rr=" + str(a);
 	//g_lastDebugStr = clock();
 
-	if (rchMin && rchMax)	//[a,b]
-		return (a % (Max - Min + 1)) + Min;
-	else if (rchMin && !rchMax)		//[a,b)
-		return (a % (Max - Min)) + Min;
-	else if (!rchMin && rchMax)		//(a,b]
-		return (a % (Max - Min)) + Min + 1;
-	else							//(a,b)
-		return (a % (Max - Min - 1)) + Min + 1;
+	//if (rchMin && rchMax)	//[a,b]
+	//	return (a % (Max - Min + 1)) + Min;
+	//else if (rchMin && !rchMax)		//[a,b)
+	//	return (a % (Max - Min)) + Min;
+	//else if (!rchMin && rchMax)		//(a,b]
+	//	return (a % (Max - Min)) + Min + 1;
+	//else							//(a,b)
+	//	return (a % (Max - Min - 1)) + Min + 1;
 }
 double CJZAPI RandomRangeDouble(double _min, double _max,	//min,max
 	bool rchMin = true, bool rchMax = true,	//开/闭 
@@ -281,6 +318,15 @@ template<typename _T>
 inline _T& CJZAPI ChoiceRef(vector<_T>& choices_vector) {
 	return choices_vector[RandomRange(0, choices_vector.size() - 1, true, true)];
 }
+
+template <typename _T>
+void CJZAPI random_shuffle(vector<_T>& vec) {
+	random_device rd;
+	mt19937 g(rd());
+
+	shuffle(vec.begin(), vec.end(), g);
+}
+
 template<typename _T>
 inline bool CJZAPI Percent(_T prob) {
 	return (RandomRange(0, 100, true, false) < prob);

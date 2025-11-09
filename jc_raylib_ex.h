@@ -258,6 +258,32 @@ Color CJZAPI StepColor(Color startColor, Color endColor, double rate) {
 	return resultColor;
 }
 
+Color CJZAPI StepAddColor(Color startColor, Color endColor, int value) {
+
+	auto startR = RAYGET_R(startColor);
+	auto startG = RAYGET_G(startColor);
+	auto startB = RAYGET_B(startColor);
+	auto startA = RAYGET_A(startColor);
+	
+	auto endR = RAYGET_R(endColor);
+	auto endG = RAYGET_G(endColor);
+	auto endB = RAYGET_B(endColor);
+	auto endA = RAYGET_A(endColor);
+
+	auto newR = (startR + ((endR - startR) > 0 ? value : (-value)));
+	auto newG = (startG + ((endG - startG) > 0 ? value : (-value)));
+	auto newB = (startB + ((endB - startB) > 0 ? value : (-value)));
+	auto newA = (startA + ((endA - startA) > 0 ? value : (-value)));
+
+	if (abs(newR - endR) <= .5 * value)	newR = endR;
+	if (abs(newG - endG) <= .5 * value)	newG = endG;
+	if (abs(newB - endB) <= .5 * value)	newB = endB;
+	if (abs(newA - endA) <= .5 * value)	newA = endA;
+
+	Color resultColor = RAYRGBA(newR, newG, newB, newA);
+	return resultColor;
+}
+
 #define WVC_AMP 12
 #define WVC_OMEGA 13.0
 #define WVC_PHASE0 0
@@ -273,13 +299,13 @@ inline Color WaveColor(Color originClr, float phi = 0.0f) {	//originClr将成为
 	return RAYRGBA(r, g, b, a);
 }
 
-inline Color InvertedColor(Color color)
+Color InvertedColor(Color color)
 {
 	return RAYRGBA(255 - RAYGET_R(color), 255 - RAYGET_G(color), 255 - RAYGET_B(color), RAYGET_A(color));
 }
 
 // 主函数：返回随时间变化的彩虹色
-Color RainbowColor(float phase0 = 0.0f, float speed = 30.0f) {
+Color RainbowColor(float phase0 /*= 0.0f*/, float speed /*= 30.0f*/) {
 	// 假设时间按秒计算，这里使用系统时间或其他适当的时间源
 	double timeInSeconds = clock() / 1000.0;
 
@@ -344,7 +370,21 @@ Color GetStringColor(string_view s) {
 		return newColor;
 	}
 }
-
+// 生成与 base 颜色相近的颜色（通过 HSL 的简单变换或者直接 RGB 微扰）
+Color SlightVariant(const Color& base, double jitter /*= 0.06*/) {
+	// 假设 Color 存在 r,g,b,a 成员 [0..255]
+	Color out = base;
+	auto perturb = [&](unsigned char c)->unsigned char {
+		int delta = (int)round((RandomRangeDouble(-jitter, jitter)) * 255.0);
+		int val = int(c) + delta;
+		if (val < 0) val = 0; if (val > 255) val = 255; return (unsigned char)val;
+	};
+	out.r = perturb(base.r);
+	out.g = perturb(base.g);
+	out.b = perturb(base.b);
+	// alpha keep as base.a
+	return out;
+}
 
 // 模板函数：计算正弦颜色并将其映射到指定范围
 Color SinColor(Color colorA, Color colorB, clock_t periodTime = 2000L, float phase0 = 0.0f) {
@@ -355,7 +395,7 @@ Color SinColor(Color colorA, Color colorB, clock_t periodTime = 2000L, float pha
 	//double normalizedTime = static_cast<double>(currentTime % periodTime) / periodTime;
 
 	//// 计算正弦值并将其映射到[0, 1]
-	//double sinValue = 0.5 * (1.0 + std::sin(2.0 * PI * normalizedTime));
+	//double sinValue = 0.5 * (1.0 + sin(2.0 * PI * normalizedTime));
 
 	//// 计算颜色分量的差值
 	//Color deltaColor;
@@ -375,6 +415,39 @@ Color SinColor(Color colorA, Color colorB, clock_t periodTime = 2000L, float pha
 
 	return StepColor(colorA, colorB, SinValue(0.0f, 1.0f, periodTime, phase0));
 }
+Color TripleColor(Color colorA, Color colorB, Color colorC, clock_t periodTime = 2000L, float phase0 = 0.0f) {
+	clock_t now = clock();
+	float currentPhase = static_cast<float>(now % periodTime) / periodTime;
+	currentPhase += phase0;
+	currentPhase = fmod(currentPhase, 1.0f);
+	if (currentPhase < 0) currentPhase += 1.0f;
+
+	float stagePhase = currentPhase * 3.0f;
+	int stage = static_cast<int>(stagePhase);
+	if (stage < 0) stage += 3; // 处理负相位
+	stage %= 3;
+	float t = stagePhase - stage;
+
+	// 计算平滑过渡参数
+	const float angle = t * static_cast<float>(PI) - static_cast<float>(PI / 2);
+	const float t_sin = (sin(angle) + 1.0f) / 2.0f;
+
+	// 确定当前渐变色对
+	Color start, end;
+	switch (stage) {
+	case 0:  start = colorA; end = colorB; break;
+	case 1:  start = colorB; end = colorC; break;
+	default: start = colorC; end = colorA; break;
+	}
+
+	// 计算插值颜色
+	return {
+		static_cast<unsigned char>(start.r * (1 - t_sin) + end.r * t_sin),
+		static_cast<unsigned char>(start.g * (1 - t_sin) + end.g * t_sin),
+		static_cast<unsigned char>(start.b * (1 - t_sin) + end.b * t_sin),
+		static_cast<unsigned char>(start.a * (1 - t_sin) + end.a * t_sin)
+	};
+}
 
 Color LighterColor(Color color)
 {
@@ -392,9 +465,12 @@ Color DoDarkerColor(Color color, bool enabled)
 {
 	return enabled ? StepColor(color, RAYRGBA(0, 0, 0, color.a), 0.5) : color;
 }
-inline Color ColorAlpha2(Color color, float alpha)
+Color ColorAlpha2(Color color, float alpha)
 {
 	return ColorAlpha(color, Lerp(0.0f, color.a / 255.0f, alpha));
+}
+Color RBExchangedColor(Color color) {
+	return Color(color.b, color.g, color.r, color.a);
 }
 
 Color FadeInOutColor(Color bodyColor, clock_t deltaTime, clock_t totalTime, clock_t inTime, clock_t outTime, Color endColor = BLACK)
@@ -407,6 +483,41 @@ Color FadeInOutColor(Color bodyColor, clock_t deltaTime, clock_t totalTime, cloc
 		return StepColor(endColor, bodyColor, deltaTime / double(inTime));
 	return StepColor(bodyColor, endColor, (deltaTime - (totalTime - outTime)) / double(outTime));
 }
+COLORREF WinColor(Color rayColor) {
+	return RGB(rayColor.r, rayColor.g, rayColor.b);
+}
+Color RayColor(COLORREF winColor) {
+	return RAYRGB(GetRValue(winColor), GetGValue(winColor), GetBValue(winColor));
+}
+Color RayColor(ImVec4 imColor) {
+	return RAYRGB(imColor.x * 255, imColor.y * 255, imColor.z * 255);
+}
+ImVec4 ImGuiColor(Color rayColor) {
+	return ImVec4(rayColor.r / 255.0f, rayColor.g / 255.0f, rayColor.b / 255.0f, rayColor.a / 255.0f);
+}
+ImVec4 ImGuiColor(int r, int g, int b, int a = 255) {
+	return ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+}
+ImVec4 ImGuiColor(COLORREF winColor) {
+	return ImGuiColor(RayColor(winColor));
+}
+
+ImVec4 RainbowColorImGui(float phase0 = 0.0f, float speed = 30.0f) {
+	return ImGuiColor(RainbowColor(phase0, speed));
+}
+
+// 将UTF-8 codepoints转换为ImGui所需的GlyphRanges格式
+ImVector<ImWchar> ConvertToGlyphRanges(const vector<int>& codepoints) {
+	ImVector<ImWchar> glyph_ranges;
+	for (int cp : codepoints) {
+		// 将每个codepoint添加到glyph_ranges中
+		glyph_ranges.push_back(static_cast<ImWchar>(cp));
+	}
+	// 添加结束符
+	glyph_ranges.push_back(0);
+	return glyph_ranges;
+}
+
 //Color GetColorInYear(float phase0 = 0.0f, float alpha = 1.0f) {
 //	// 计算颜色
 //	Color color;
@@ -437,8 +548,12 @@ inline void cls(Image* pimg = nullptr, Color color = BLANK)
 		ImageClearBackground(pimg, color);
 }
 
-int textwidth(const char* str, int fs = g_fs, float spacing = g_spacing)
+int textwidth(const char* str, int fs/* = 0*/, float spacing /*= g_spacing*/)
 {
+	if (0 == fs)
+		fs = g_fs;
+	if (0.0f == spacing)
+		spacing = g_spacing;
 	return MeasureTextEx(g.font, str, fs, spacing).x;
 	//return TextLength(str) * (g_fs + g_spacing);
 }
@@ -462,27 +577,33 @@ Rectangle ZoomingRect(const Rectangle& rt, double rate)
 
 void CheckExtraFontChars(const string& s)
 {
+	string mode = GET_COMBOBOX(g.config.gui_config["Font Reload Policy (for Non-ASCII)"]).get<string>();
+	if (mode.find("Deny") != string::npos)
+		return;		// 拒绝检查重载字体
+	int garbage;
 	//<!> UTF-8
 	bool changed{ false };
-
-	/*bool show{ false };*/
+	list<int> codePoints;
 
 	for (size_t i = 0; i < s.length(); ++i)
 	{
-		// 检查当前字符是否是中文字符
-		/*bool go{ false };*/
-
-		if ((unsigned char)(s[i]) >= 0xE0 && (unsigned char)(s[i]) <= 0xEF)
+		int n = 1;
+		if ((unsigned char)(s[i]) < 0x80)
+			n = 1;
+		else if (((unsigned char)(s[i]) & 0xE0) == 0xC0)
+			n = 2;
+		else if (((unsigned char)(s[i]) & 0xF0) == 0xE0)
+			n = 3;
+		else if (((unsigned char)(s[i]) & 0xF8) == 0xF0)
+			n = 4;
+		
+		//if ((unsigned char)(s[i]) >= 0xE0 && (unsigned char)(s[i]) <= 0xEF)
+		//if ((unsigned char)(s[i]) > 0x7F && (unsigned char)(s[i]) < upper_bounds[j])
+		if (n > 1)
 		{
-			/*go = true;
-			show = true;*/
 
-			int garbage;
-			int codePoint = GetCodepoint(s.substr(i, 3).c_str(), &garbage);
-
-			//SetColor(10);
-			//printf("%s ", s.substr(i, 3).c_str());
-			/*((s[i] & 0x0F) << 12) | ((s[i + 1] & 0x3F) << 6) | (s[i + 2] & 0x3F);*/
+			
+			int codePoint = GetCodepoint(s.substr(i, n).c_str(), &garbage);
 
 			bool notfound{ true };
 			for (int j : g.extra_chars_codepoints)
@@ -492,7 +613,14 @@ void CheckExtraFontChars(const string& s)
 					break;
 				}
 
-			//if (g.chn_codepoints.find(codePoint) == g.chn_codepoints.end()) 
+			if (notfound)
+				for (int j : g.extra_chars_codepoints_buffer)
+					if (j == codePoint)
+					{
+						notfound = false;
+						break;
+					}
+
 			if (notfound)
 			{
 				//g.notify.WarningMessage("AddExtraChar, codepoint = " + str(codePoint) + " utf8str = " + str(CodepointToUTF8(codePoint, &garbage)));
@@ -500,34 +628,40 @@ void CheckExtraFontChars(const string& s)
 				changed = true;
 
 				//DebugLog("ADD CODEPOINT="+str(codePoint)+" CHAR="+s.substr(i, 3)+ '\n');
-				g.AddExtraChar(codePoint, CodepointToUTF8(codePoint, &garbage));
+				g.extra_chars_codepoints_buffer.push_back(codePoint);
 			}
 
 			// 由于中文字符占用3个字节，因此增加索引i的值
-			i += 2;
+			i += n - 1;
+			continue;
 		}
-		/*if (show)
-		{
-			DebugLog(sprintf2("%d %c %02X %s", i, s[i], (unsigned char)(s[i]),
-				go?"Yes":"No"));
-		}*/
-
 	}
 
-	/*if (show)
-		DebugLog("WHOLE:  " + s);*/
-
-	if (changed)
+	if (changed || !g.extra_chars_codepoints_buffer.empty())
 	{
+		if (g.config.gui_config.contains("Font Reload Cooldown (ms)") && clock() - g.lastFontReload < g.config.gui_config["Font Reload Cooldown (ms)"].get<long>()) {
+			return;
+		}
+
+		while (!g.extra_chars_codepoints_buffer.empty()) {
+			g.AddExtraChar(g.extra_chars_codepoints_buffer.front(), CodepointToUTF8(g.extra_chars_codepoints_buffer.front(), &garbage));
+			g.extra_chars_codepoints_buffer.pop_front();
+		}
+			
+
+		g.lastFontReload = clock();
 		//<!>
 		ReloadFont();
 	}
 }
 
+// 已废弃
+#define DPIF(coord) (AllowHighDPI() ? ((coord) / g.screen_scale) : (coord))
+
 void outtextxy(int x, int y, const char* text)
 {
 	CheckExtraFontChars(text);
-	DrawTextEx(g.font, text, MakeVector2(x, y), g_fs, g_spacing, g_fore_color);
+	DrawTextEx(g.font, text, MakeVector2((x), (y)), g_fs, g_spacing, g_fore_color);
 }
 int xyprintf(int x, int y, const char* szFormat, ...)
 {
@@ -540,7 +674,7 @@ int xyprintf(int x, int y, const char* szFormat, ...)
 	//DrawText(buffer, x, y, g_fs, g_fore_color);
 
 	CheckExtraFontChars(buffer);
-	DrawTextEx(g.font, buffer, MakeVector2(x, y), g_fs, g_spacing, g_fore_color);
+	DrawTextEx(g.font, buffer, MakeVector2((x), (y)), g_fs, g_spacing, g_fore_color);
 	return ret;
 }
 void scrollouttextxy(int x, int y, int w, const char* text)
@@ -568,7 +702,7 @@ void scrollouttextxy(int x, int y, int w, const char* text)
 
 	}
 	CheckExtraFontChars(s);
-	DrawTextEx(g.font, s.c_str(), MakeVector2(x, y), g_fs, g_spacing, g_fore_color);
+	DrawTextEx(g.font, s.c_str(), MakeVector2((x), (y)), g_fs, g_spacing, g_fore_color);
 
 }
 int scrollprintf(int x, int y, int w, const char* szFormat, ...)
@@ -602,7 +736,7 @@ int xyprintf(Image* pimg, int x, int y, const char* szFormat, ...)
 	return ret;
 }
 
-inline short KnowItsLen(u_char c) {
+short KnowItsLen(u_char c) {
 	short ret = 0;
 	if (c > 0x7f)	ret = 2;
 	else			ret = 1;
@@ -847,7 +981,7 @@ int midprintf(int y, const char* szFormat, ...)
 	int res = _vsnprintf(buffer, 1024, szFormat, va);
 	va_end(va);
 	int x = g.uix / 2 - textwidth(buffer) / 2;
-	DrawTextEx(g.font, buffer, MakeVector2(x, y), g_fs, g_spacing, g_fore_color);
+	DrawTextEx(g.font, buffer, MakeVector2((x), (y)), g_fs, g_spacing, g_fore_color);
 	//xyprintf(x, y, buffer);
 	return res;
 }
@@ -975,7 +1109,7 @@ void MyImageFlipVertical(Image* pimg)
 }
 void FlipImage(Image* pimg, DIR2 dir)
 {
-	if (!pimg || !IsImageReady(*pimg))
+	if (!pimg || !IsImageValid(*pimg))
 		return;
 
 	if (dir == HORIZ)
@@ -985,7 +1119,7 @@ void FlipImage(Image* pimg, DIR2 dir)
 }
 void MyImageColorTint(Image* pimg, Color tint)
 {
-	if (!pimg || !IsImageReady(*pimg))
+	if (!pimg || !IsImageValid(*pimg))
 		return;
 	Image img = ImageCopy(*pimg);
 	ImageColorTint(&img, tint);
@@ -994,7 +1128,7 @@ void MyImageColorTint(Image* pimg, Color tint)
 }
 void MyImageColorBrightness(Image* pimg, int brightness)
 {
-	if (!pimg || !IsImageReady(*pimg))
+	if (!pimg || !IsImageValid(*pimg))
 		return;
 	Image img = ImageCopy(*pimg);
 	ImageColorBrightness(&img, brightness);
@@ -1027,11 +1161,11 @@ void QuickDraw(const Image* pimgSrc, double x, double y, float alpha_rat = 1.0, 
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
 
-	DrawTexture(texture, x, y, ColorAlpha(tint, alpha_rat));
+	DrawTexture(texture, (x), (y), ColorAlpha(tint, alpha_rat));
 
 	
 		g.frame_textures.push_back(texture);
@@ -1041,10 +1175,10 @@ void QuickDraw(const Image* pimgSrc, double x, double y, double src_x, double sr
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
-	DrawTexturePro(texture, MakeRectangle0(src_x, src_y, src_w, src_h), MakeRectangle0(x, y, src_w, src_h),
+	DrawTexturePro(texture, MakeRectangle0(src_x, src_y, src_w, src_h), MakeRectangle0((x), (y), src_w, src_h),
 		Vector2{ 0.5f * pimgSrc->width, 0.5f * pimgSrc->height }, 0.0f, ColorAlpha(tint, alpha_rat));
 	
 		g.frame_textures.push_back(texture);
@@ -1057,10 +1191,10 @@ void QuickDraw(const Image* pimgSrc, double dst_x, double dst_y, double dst_w, d
 
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
-	DrawTexturePro(texture, MakeRectangle0(src_x, src_y, src_w, src_h), MakeRectangle0(dst_x, dst_y, dst_w, dst_h),
+	DrawTexturePro(texture, MakeRectangle0(src_x, src_y, src_w, src_h), MakeRectangle0((dst_x), (dst_y), dst_w, dst_h),
 		//Vector2{ 0.5f * pimgSrc->width, 0.5f * pimgSrc->height }, 
 		Vector2{ 0.0f, 0.0f },
 		0.0f, ColorAlpha(tint, alpha_rat));
@@ -1072,10 +1206,10 @@ void QuickDrawRotate(const Image* pimgSrc, double x, double y, float rotation, f
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
-	DrawTextureEx(texture, MakeVector2(x, y), RotationFormula(rotation), 1.0f, ColorAlpha(tint, alpha_rat));
+	DrawTextureEx(texture, MakeVector2((x), (y)), RotationFormula(rotation), 1.0f, ColorAlpha(tint, alpha_rat));
 	
 		g.frame_textures.push_back(texture);
 }
@@ -1084,11 +1218,11 @@ void QuickDrawRotateEx(const Image* pimgSrc, double x, double y, float rotation,
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
 	DrawTexturePro(texture, MakeRectangle0(0, 0, pimgSrc->width, pimgSrc->height),
-		MakeRectangle0(x, y, pimgSrc->width, pimgSrc->height),
+		MakeRectangle0((x), (y), pimgSrc->width, pimgSrc->height),
 		Vector2{ center_x * pimgSrc->width, center_y * pimgSrc->height },
 		RotationFormula(rotation), ColorAlpha(tint, alpha_rat));
 	
@@ -1099,10 +1233,10 @@ void QuickDrawZoom(const Image* pimgSrc, double x, double y, float scale, float 
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
-	DrawTextureEx(texture, MakeVector2(x, y), 0.0f, scale, ColorAlpha(tint, alpha_rat));
+	DrawTextureEx(texture, MakeVector2((x), (y)), 0.0f, scale, ColorAlpha(tint, alpha_rat));
 	
 		g.frame_textures.push_back(texture);
 }
@@ -1111,10 +1245,10 @@ void QuickDrawRotateZoom(const Image* pimgSrc, double x, double y, float rotatio
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
-	DrawTextureEx(texture, MakeVector2(x, y),
+	DrawTextureEx(texture, MakeVector2((x), (y)),
 		RotationFormula(rotation), scale, ColorAlpha(tint, alpha_rat));
 	
 		g.frame_textures.push_back(texture);
@@ -1124,11 +1258,11 @@ void QuickDrawRotateZoomEx(const Image* pimgSrc, double x, double y, float cente
 	if (!pimgSrc)	return;
 	Texture texture = LoadTextureFromImage(*pimgSrc);
 #ifndef NO_QUICKDRAW_TEXTURE_CHECK
-	if (!IsTextureReady(texture))
+	if (!IsTextureValid(texture))
 		return;
 #endif
 	DrawTexturePro(texture, MakeRectangle0(0, 0, pimgSrc->width, pimgSrc->height),
-		MakeRectangle0(x, y, pimgSrc->width * scale, pimgSrc->height * scale), Vector2{ center_x * pimgSrc->width, center_y * pimgSrc->height },
+		MakeRectangle0((x), (y), pimgSrc->width * scale, pimgSrc->height * scale), Vector2{ center_x * pimgSrc->width, center_y * pimgSrc->height },
 		RotationFormula(rotation), ColorAlpha(tint, alpha_rat));
 	
 		g.frame_textures.push_back(texture);
@@ -1150,8 +1284,9 @@ LRESULT CALLBACK RawInputProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		RAWINPUT raw;
 		UINT size = sizeof(raw);
 		GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, &raw, &size, sizeof(RAWINPUTHEADER));
-		if (raw.header.dwType == RIM_TYPEMOUSE) {
+		if (raw.header.dwType == RIM_TYPEMOUSE && g.loaded && !g.quitting) {
 			if (raw.data.mouse.usButtonFlags == RI_MOUSE_WHEEL) {
+
 				short wheelDelta = static_cast<short>(raw.data.mouse.usButtonData);
 				if (wheelDelta > 0) {
 					OnMouseWheel(-1);
@@ -1167,43 +1302,210 @@ LRESULT CALLBACK RawInputProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 DWORD MouseWheelDetectionProc(LPVOID none);
 
-Image TakeRealScreenshot(int left, int top, int width, int height)
+Image TakeRealScreenshot(int left, int top, int width, int height, HWND hwnd /*= nullptr*/)
 {
+	if (0 == width) {
+		width = hwnd ? GetWindowWidth(hwnd) : g.uix;
+	}
+	if (0 == height) {
+		height = hwnd ? GetWindowHeight(hwnd) : g.uiy;
+	}
+
 	// 创建内存位图
-	HDC hdc = GetDC(0);
+	HDC hdc = GetWindowDC(hwnd);
+	
 	HDC hMemDC = CreateCompatibleDC(hdc);
-	HBITMAP hBitmap = CreateCompatibleBitmap(hdc, g.uix, g.uiy);
+	HBITMAP hBitmap = CreateCompatibleBitmap(hdc, width, height);
 	SelectObject(hMemDC, hBitmap);
 
-	// 将窗口内容复制到内存位图
-	BitBlt(hMemDC, left, top, width, height, hdc, 0, 0, SRCCOPY);
+	BOOL pwSuccess = FALSE;
+	if (hwnd)	// 关键：使用 PrintWindow 捕获加速渲染窗口
+		pwSuccess = PrintWindow(hwnd, hMemDC, PW_RENDERFULLCONTENT);
+
+	if (!pwSuccess) {
+		// 回退到 BitBlt（可能不适用于所有情况）
+		BitBlt(hMemDC, 0, 0, width, height, hdc, left, top, SRCCOPY);
+	}
 
 	// 获取像素数据
-	BYTE* pixels = new BYTE[int(g.uix * g.uiy * 4)]; // RGBA格式，每个像素占4字节
+	BYTE* pixels = new BYTE[int(width * height * 4)]; // RGBA格式，每个像素占4字节
 	BITMAPINFO bmi = { 0 };
 	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	bmi.bmiHeader.biWidth = g.uix;
-	bmi.bmiHeader.biHeight = -g.uiy; // 负表示顶部到底部扫描
+	bmi.bmiHeader.biWidth = width;
+	bmi.bmiHeader.biHeight = -height; // 负表示顶部到底部扫描
 	bmi.bmiHeader.biPlanes = 1;
 	bmi.bmiHeader.biBitCount = 32;
 	bmi.bmiHeader.biCompression = BI_RGB;
-	GetDIBits(hMemDC, hBitmap, 0, g.uiy, pixels, &bmi, DIB_RGB_COLORS);
+	GetDIBits(hMemDC, hBitmap, 0, height, pixels, &bmi, DIB_RGB_COLORS);
 
-	Image img = GenImageColor(g.uix, g.uiy, BLANK);
+	Image img = GenImageColor(width, height, BLANK);
 
-	for (int y = 0; y < g.uiy; ++y)
-		for (int x = 0; x < g.uix; ++x)
+	for (int y = 0; y < height; ++y)
+		for (int x = 0; x < width; ++x)
 		{
 			ImageDrawPixel(&img, x, y,
 				RAYRGB(
-					pixels[4 * int(y * g.uix + x) + 2],
-					pixels[4 * int(y * g.uix + x) + 1],
-					pixels[4 * int(y * g.uix + x)]));
+					pixels[4 * int(y * width + x) + 2],
+					pixels[4 * int(y * width + x) + 1],
+					pixels[4 * int(y * width + x)]));
 		}
 
 	delete[] pixels;
 	DeleteObject(hBitmap);
 	DeleteDC(hMemDC);
+	ReleaseDC(hwnd, hdc); // 必须释放原始DC
 
 	return img;
+}
+
+void TakeRealScreenshotInto(uint8_t* dst, int left, int top, int width, int height, HWND hwnd = nullptr)
+{
+	if (width == 0) width = hwnd ? GetWindowWidth(hwnd) : g.uix;
+	if (height == 0) height = hwnd ? GetWindowHeight(hwnd) : g.uiy;
+
+	HDC hdc = GetWindowDC(hwnd);
+	HDC hMemDC = CreateCompatibleDC(hdc);
+	HBITMAP hBitmap = CreateCompatibleBitmap(hdc, width, height);
+	SelectObject(hMemDC, hBitmap);
+
+	BOOL pwSuccess = hwnd ? PrintWindow(hwnd, hMemDC, PW_RENDERFULLCONTENT) : FALSE;
+	if (!pwSuccess) BitBlt(hMemDC, 0, 0, width, height, hdc, left, top, SRCCOPY);
+
+	BITMAPINFO bmi{};
+	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bmi.bmiHeader.biWidth = width;
+	bmi.bmiHeader.biHeight = -height; // 从上到下
+	bmi.bmiHeader.biPlanes = 1;
+	bmi.bmiHeader.biBitCount = 32;
+	bmi.bmiHeader.biCompression = BI_RGB;
+
+	// 注意：GetDIBits 直接写进 dst（B,G,R,A）
+	GetDIBits(hMemDC, hBitmap, 0, height, dst, &bmi, DIB_RGB_COLORS);
+
+	DeleteObject(hBitmap);
+	DeleteDC(hMemDC);
+	ReleaseDC(hwnd, hdc);
+}
+
+
+void DrawRectangleRounded2(Rectangle rec, float roundness, int segments, Color color)
+{
+	Rectangle rec2{ rec };
+	rec2.x = (rec2.x);
+	rec2.y = (rec2.y);
+	
+	if (g.config.gui_config.contains("Round Corners") && g.config.gui_config["Round Corners"].get<bool>())
+		DrawRectangleRounded(rec2, roundness, segments, color);
+	else
+		DrawRectangle(rec2.x, rec2.y, rec2.width, rec2.height, color);
+}
+void DrawRectangleRoundedDecision(Rectangle rec, float roundness, int segments, Color color, bool round_corners)
+{
+	Rectangle rec2{ rec };
+	rec2.x = (rec2.x);
+	rec2.y = (rec2.y);
+	if (round_corners)
+		DrawRectangleRounded(rec2, roundness, segments, color);
+	else
+		DrawRectangle(rec2.x, rec2.y, rec2.width, rec2.height, color);
+}
+void DrawRectangleRoundedLines2(Rectangle rec, float roundness, int segments, float lineThick, Color color)
+{
+	Rectangle rec2{ rec };
+	rec2.x = (rec2.x);
+	rec2.y = (rec2.y);
+	if (g.config.gui_config.contains("Round Corners") && g.config.gui_config["Round Corners"].get<bool>())
+		DrawRectangleRoundedLinesEx(rec2, roundness, segments, lineThick, color);
+	else
+        DrawRectangleLinesEx(rec2, lineThick, color);
+}
+void DrawRectangleRoundedLinesDecision(Rectangle rec, float roundness, int segments, float lineThick, Color color, bool round_corners)
+{
+	Rectangle rec2{ rec };
+	rec2.x = (rec2.x);
+	rec2.y = (rec2.y);
+	if (round_corners)
+		DrawRectangleRoundedLinesEx(rec2, roundness, segments, lineThick, color);
+	else
+		DrawRectangleLinesEx(rec2, lineThick, color);
+}
+
+void DrawRectangleRoundedShadowDecision(Rectangle rec, float roundness, int segments, Color color, bool round_corners, bool shadow, float shadow_thick /*= 10.0f*/, Color shadowColor /*= BLACK*/)
+{
+	Rectangle rec2{ rec };
+	rec2.x = (rec2.x);
+	rec2.y = (rec2.y);
+
+	if (shadow) {
+		Color emptyColor = ColorAlpha2(shadowColor, 0.0f);
+		// 绘制顶部和底部阴影
+		DrawRectangleGradientV(rec2.x,
+			rec2.y - shadow_thick,
+			rec2.width,
+			shadow_thick,
+			emptyColor,
+			shadowColor
+		);
+
+		DrawRectangleGradientV(rec2.x,
+			rec2.y + rec2.height,
+			rec2.width,
+			shadow_thick,
+			shadowColor,
+			emptyColor
+		);
+
+		// 绘制角落阴影
+		DrawRectangleGradientEx(MakeRectangle0(rec2.x - shadow_thick, rec2.y - shadow_thick,
+			shadow_thick, shadow_thick),
+			emptyColor,
+			emptyColor,
+			shadowColor,
+			emptyColor
+		);
+		DrawRectangleGradientEx(MakeRectangle0(rec2.x - shadow_thick, rec2.y + rec2.height,
+			shadow_thick, shadow_thick),
+			emptyColor,
+			emptyColor,
+			emptyColor,
+			shadowColor
+		);
+
+		DrawRectangleGradientEx(MakeRectangle0(rec2.x + rec2.width, rec2.y - shadow_thick,
+			shadow_thick, shadow_thick),
+			emptyColor,
+			shadowColor,
+			emptyColor,
+			emptyColor
+		);
+		DrawRectangleGradientEx(MakeRectangle0(rec2.x + rec2.width, rec2.y + rec2.height,
+			shadow_thick, shadow_thick),
+			shadowColor,
+			emptyColor,
+			emptyColor,
+			emptyColor
+		);
+
+		// 绘制左右阴影
+		DrawRectangleGradientH(rec2.x - shadow_thick,
+			rec2.y,
+			shadow_thick,
+			rec2.height,
+			emptyColor,
+			shadowColor
+		);
+
+		DrawRectangleGradientH(rec2.x + rec2.width,
+			rec2.y,
+			shadow_thick,
+			rec2.height,
+			shadowColor,
+			emptyColor
+		);
+	}
+
+	if (round_corners)
+		DrawRectangleRounded(rec2, roundness, segments, color);
+	else
+		DrawRectangle(rec2.x, rec2.y, rec2.width, rec2.height, color);
 }

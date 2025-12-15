@@ -1,4 +1,4 @@
-﻿// Symbolizer.cpp
+// Symbolizer.cpp
 // Usage: symbolizer.exe <crash_log.txt> [symbol_search_path]
 // Written by GPT5 & Wormwaker
 
@@ -70,8 +70,17 @@ string FindModuleOnSearchPaths(const string& filename, const string& searchPaths
     }
     return "";
 }
+string strip(const string& s)
+{
+    // 找到第一个非空白字符的位置
+    auto start = find_if_not(s.begin(), s.end(), [](int c) { return isspace(c); });
 
+    // 找到最后一个非空白字符的位置
+    auto end = find_if_not(s.rbegin(), s.rend(), [](int c) { return isspace(c); }).base();
 
+    // 返回去除空白字符后的子串
+    return (start >= end ? string() : string(start, end));
+}
 // Parse lines like:
 //   JackalClient.exe + 0x3545fd
 //   kernel32.dll + 0x1A2B
@@ -175,37 +184,74 @@ int main(int argc, char** argv)
     }
 
     // --- 自动提取版本号 ---
-    std::string version = "unknown";
+    std::string versionStr = "unknown", baseVersion = "unknown", edition = "Free";
     std::string line;
     while (std::getline(ifs, line)) {
+        //if (line.find("Version:") != std::string::npos) {
+        //    size_t pos = line.find("Version:");
+        //    if (pos != std::string::npos) {
+        //        version = line.substr(pos + 8);
+        //        // 去掉前后空格
+        //        version.erase(0, version.find_first_not_of(" \t\r\n"));
+        //        version.erase(version.find_last_not_of(" \t\r\n") + 1);
+        //    }
+        //    break;
+        //}
         if (line.find("Version:") != std::string::npos) {
             size_t pos = line.find("Version:");
-            if (pos != std::string::npos) {
-                version = line.substr(pos + 8);
-                // 去掉前后空格
-                version.erase(0, version.find_first_not_of(" \t\r\n"));
-                version.erase(version.find_last_not_of(" \t\r\n") + 1);
+            versionStr = line.substr(pos + 8);
+            versionStr = strip(versionStr);
+
+            // 判断是否包含 Pro
+            if (versionStr.find("Pro") != std::string::npos) {
+                edition = "Pro";
             }
-            break;
+            else {
+                edition = "Free";
+            }
+
+            // 去掉 Pro / Free，得到基础版本
+            baseVersion = versionStr;
+            size_t p = baseVersion.find("Pro");
+            if (p != std::string::npos) {
+                baseVersion = baseVersion.substr(0, p);
+            }
+            baseVersion = strip(baseVersion);
         }
+
     }
     ifs.close();
 
-    if (version == "unknown") {
+    if (baseVersion == "unknown") {
         SetColor(12);
         std::cerr << "Failed to extract version from crash log.\n";
         SetColor(15);
         std::cout << "Please input it manually (e.g. v0.7c): ";
-        std::getline(std::cin, version);
+        std::getline(std::cin, baseVersion);
+        SetColor(14);
+        std::cout << "Choose edition (0=Free, 1=Pro): ";
+
+        int i{ 0 };
+        std::cin >> i;
+        if (i == 0) {
+            edition = "Free";
+        }
+        else {
+            edition = "Pro";
+        }
     }
     else {
         SetColor(10);
-        std::cout << "[*] Detected version: " << version << "\n";
+        std::cout << "[*] Detected version: " << baseVersion << "\n";
     }
 
+    SetColor(14);
+    std::cout << "[*] Selected Edition: " << edition << "\n";
+
+    // 客户端编译生成后事件：copy /Y "$(TargetPath)" "D:\JackalClientSymbols\$(ClientVersion)\$(TargetName).exe"
     // --- 构造符号搜索路径 ---
     std::string symRoot = "D:\\JackalClientSymbols\\";
-    std::string symPath = symRoot + version + ";D:\\Wormwaker\\PROGRAMS\\C、C++\\System\\JackalClient\\Release";
+    std::string symPath = symRoot + edition + "\\" + baseVersion;// +";D:\\Wormwaker\\PROGRAMS\\C、C++\\System\\JackalClient\\Release";
     SetColor(3);
     std::cout << "[*] Using symbol search path: " << symPath << "\n";
 

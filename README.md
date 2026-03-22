@@ -18,7 +18,7 @@ English | [简体中文](./README-zh-hans-cn.md)
 
 ### Subscribe 
 [@Wormwaker](https://space.bilibili.com/3494361276877525)
-### 's Bilibili Channel and join Wormwaker's QQ Group to get this Client:
+### 's Bilibili Channel and join Wormwaker's QQ Group or go to the release page to get this Client:
 ### 196218959
 
 ### Bilibili Channel Link

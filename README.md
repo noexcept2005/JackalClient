@@ -4,7 +4,7 @@ English | [简体中文](./README-zh-hans-cn.md)
 
 <h1 align="center">
   <p align="center">
-    <img src="header.png" alt="JackalClient Header">
+    <img src="header.png" alt="UwU">
   </p>
     JackalClient
   <p align="center">
@@ -22,6 +22,13 @@ English | [简体中文](./README-zh-hans-cn.md)
     </a>
     <a href="https://www.microsoft.com/en-US/software-download">
       <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows">
+    </a>
+    <br></br>
+    <a href="https://space.bilibili.com/3494361276877525">
+      <img src="https://img.shields.io/badge/Bilibili-Wormwaker-white?logo=bilibili&logoColor=white&labelColor=fe68b0" alt="Bilibili">
+    </a>
+    <a href="https://ifdian.net/a/wormwaker697">
+      <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Bilibili">
     </a>
   </p>
 </h1>

@@ -2,6 +2,31 @@
 
 English | [简体中文](./README-zh-hans-cn.md)
 
+<h1 align="center">
+  <p align="center">
+    <img src="header.png" alt="JackalClient Header">
+  </p>
+    JackalClient
+  <p align="center">
+    <a href="https://www.gnu.org/licenses/agpl-3.0.html">
+      <img src="https://img.shields.io/badge/License-AGPL%20v3-red?logo=gnu&logoColor=white" alt="License">
+    </a>
+    <a href="https://opensource.org/license/agpl-v3">
+      <img src="https://img.shields.io/badge/OSI-Certified-brightgreen?logo=opensourceinitiative" alt="OSI Certified">
+    </a>
+    <a href="https://cppreference.cn/w/">
+      <img src="https://img.shields.io/badge/Language-C++-00599C?logo=cplusplus" alt="Language">
+    </a>
+    <a href="https://www.raylib.com/">
+      <img src="https://img.shields.io/badge/Graphics-raylib-222222?logo=raylib&logoColor=white" alt="raylib">
+    </a>
+    <a href="https://www.microsoft.com/en-US/software-download">
+      <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows">
+    </a>
+  </p>
+</h1>
+
+
 ### a free Hacker Client for WINDOWS (Partial Source Code, esp. UI)
 
 ### It's not a Minecraft Ghost Client XD |O|
@@ -51,6 +76,7 @@ find out more:
   />
 </picture>
 
+![Alt](https://repobeats.axiom.co/api/embed/5d5e3bf7d00d84c5c6ba9273aca43f9bd536cd09.svg "Repobeats analytics image")
 ____________________________
 
 Previous AD, just have a look ...qwq

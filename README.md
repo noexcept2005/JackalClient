@@ -1,4 +1,3 @@
-# JackalClient
 
 English | [简体中文](./README-zh-hans-cn.md)
 
@@ -99,7 +98,7 @@ Previous AD, just have a look ...qwq
 
 Best Ghost Client for Windows: Using Jackal Client to Defeat Your Opponents🥰
 
-JACKAL CLIENT is a free hacker client designed for Windows, including 175+ awesome modules, ranging from Combat, Window, Process, File, Registry, Render to Misc. Everything is possible with this client, so overwhelm your system in your way!😋
+J̷a̷c̷k̷a̷l̷C̷l̷i̷e̷n̷t̷  is a free hacker client designed for Windows, including 175+ awesome modules, ranging from Combat, Window, Process, File, Registry, Render to Misc. Everything is possible with this client, so overwhelm your system in your way!😋
 
 🍎 Free client
 

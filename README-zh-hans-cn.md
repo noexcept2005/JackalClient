@@ -24,6 +24,19 @@
     <a href="https://www.microsoft.com/zh-cn/software-download">
       <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows">
     </a>
+    <br></br>
+    <a href="https://www.wormwake.com/jackalclient">
+      <img src="https://img.shields.io/badge/Website-JackalClient-blue?logo=google-chrome&logoColor=white" alt="Website">
+    </a>
+    <a href="https://doc.wormwake.com">
+      <img src="https://img.shields.io/badge/Docs-Documentation-green?logo=readthedocs&logoColor=white" alt="Docs">
+    </a>
+    <a href="https://space.bilibili.com/3494361276877525">
+      <img src="https://img.shields.io/badge/Bilibili-Wormwaker-white?logo=bilibili&logoColor=white&labelColor=fe68b0" alt="Bilibili">
+    </a>
+    <a href="https://ifdian.net/a/wormwaker697">
+      <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Bilibili">
+    </a>
   </p>
 </h1>
 

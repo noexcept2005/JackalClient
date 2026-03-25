@@ -24,6 +24,12 @@ English | [简体中文](./README-zh-hans-cn.md)
       <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows">
     </a>
     <br></br>
+    <a href="https://www.wormwake.com/jackalclient">
+      <img src="https://img.shields.io/badge/Website-JackalClient-blue?logo=google-chrome&logoColor=white" alt="Website">
+    </a>
+    <a href="https://doc.wormwake.com">
+      <img src="https://img.shields.io/badge/Docs-Documentation-green?logo=readthedocs&logoColor=white" alt="Docs">
+    </a>
     <a href="https://space.bilibili.com/3494361276877525">
       <img src="https://img.shields.io/badge/Bilibili-Wormwaker-white?logo=bilibili&logoColor=white&labelColor=fe68b0" alt="Bilibili">
     </a>

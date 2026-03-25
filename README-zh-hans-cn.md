@@ -2,11 +2,9 @@
 
 [English](./README.md) | 简体中文
 
-### 免费的 Windows 黑客端 （部分开源，尤其是界面部分）
+### 免费的 Windows 黑客端 （部分开源，界面部分）
 
-### 这不是MC的纪啊 XD 哈哈哈
-
-### 只是长得像（
+### 这并非是一个 Minecraft 作弊端，只是视觉模仿。
 
 <img width="1280" height="760" alt="v0 6a" src="https://github.com/user-attachments/assets/e352dee6-32e3-4336-b1ee-9028d7501c6e" />
 <img width="1280" height="761" alt="hacker_style" src="https://github.com/user-attachments/assets/71e617d3-b1ad-472f-b088-d3bd478d8c28" />
@@ -14,11 +12,15 @@
 <img width="1264" height="752" alt="neverlose-style" src="https://github.com/user-attachments/assets/c4bdf775-c941-4ad4-92ce-ae3103360027" />
 
 
-### 请先在B站关注
+### B站关注
 [@Wormwaker](https://space.bilibili.com/3494361276877525)
-### ，然后前往企鹅群获取，这里不提供链接
-## 196218959
 
+### 请查看
+[Official Website](https://www.wormwake.com/jackalclient)
+[Documentation](https://doc.wormwake.com)
+
+### B站视频
+[Re: 当我把 Vape 开到 Windows 上？ ft.JackalClientAlpha](https://www.bilibili.com/video/BV12sPCzfEyZ)
 ### B站合集链接
 [https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082)
 
@@ -47,7 +49,7 @@
 
 ____________________________
 
-Previous AD, just have a look ...qwq
+很古老的一个广告：
 
 <img width="1014" height="569" alt="GUI2" src="https://github.com/user-attachments/assets/7d2b7c2c-07e9-42fd-b6b5-61883f4dfa66" />
 

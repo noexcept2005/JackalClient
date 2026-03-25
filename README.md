@@ -33,7 +33,7 @@ English | [简体中文](./README-zh-hans-cn.md)
       <img src="https://img.shields.io/badge/Bilibili-Wormwaker-white?logo=bilibili&logoColor=white&labelColor=fe68b0" alt="Bilibili">
     </a>
     <a href="https://ifdian.net/a/wormwaker697">
-      <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Bilibili">
+      <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Afdian">
     </a>
   </p>
 </h1>

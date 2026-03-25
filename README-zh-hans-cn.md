@@ -2,13 +2,10 @@
 
 [English](./README.md) | 简体中文
 
-### 免费的 Windows 黑客端 （部分开源，界面部分）
-
-### 这并非是一个 Minecraft 作弊端，只是视觉模仿。
 
 <h1 align="center">
   <p align="center">
-    <img src="header.png" alt="JackalClient Header">
+    <img src="header.png" alt="UwU">
   </p>
     JackalClient
   <p align="center">
@@ -29,6 +26,10 @@
     </a>
   </p>
 </h1>
+
+### 免费的 Windows 黑客端 （部分开源，界面部分）
+
+### 这并非是一个 Minecraft 作弊端，只是视觉模仿。
 
 <img width="1280" height="760" alt="v0 6a" src="https://github.com/user-attachments/assets/e352dee6-32e3-4336-b1ee-9028d7501c6e" />
 <img width="1280" height="761" alt="hacker_style" src="https://github.com/user-attachments/assets/71e617d3-b1ad-472f-b088-d3bd478d8c28" />

@@ -1,4 +1,3 @@
-# JackalClient
 
 [English](./README.md) | 简体中文
 
@@ -10,10 +9,10 @@
     JackalClient
   <p align="center">
     <a href="https://www.gnu.org/licenses/agpl-3.0.html">
-      <img src="https://img.shields.io/badge/License-AGPL%20v3-red?logo=gnu&logoColor=white" alt="License">
+      <img src="https://img.shields.io/badge/License-AGPL%20v3-red?logo=gnu&logoColor=white" alt="证书">
     </a>
     <a href="https://opensource.org/license/agpl-v3">
-      <img src="https://img.shields.io/badge/OSI-Certified-brightgreen?logo=opensourceinitiative" alt="OSI Certified">
+      <img src="https://img.shields.io/badge/OSI-Certified-brightgreen?logo=opensourceinitiative" alt="OSI 认证">
     </a>
     <a href="https://cppreference.cn/w/">
       <img src="https://img.shields.io/badge/Language-C++-00599C?logo=cplusplus" alt="Language">
@@ -26,16 +25,16 @@
     </a>
     <br></br>
     <a href="https://www.wormwake.com/jackalclient">
-      <img src="https://img.shields.io/badge/Website-JackalClient-blue?logo=google-chrome&logoColor=white" alt="Website">
+      <img src="https://img.shields.io/badge/Website-JackalClient-blue?logo=google-chrome&logoColor=white" alt="官网">
     </a>
     <a href="https://doc.wormwake.com">
-      <img src="https://img.shields.io/badge/Docs-Documentation-green?logo=readthedocs&logoColor=white" alt="Docs">
+      <img src="https://img.shields.io/badge/Docs-Documentation-green?logo=readthedocs&logoColor=white" alt="文档">
     </a>
     <a href="https://space.bilibili.com/3494361276877525">
       <img src="https://img.shields.io/badge/Bilibili-Wormwaker-white?logo=bilibili&logoColor=white&labelColor=fe68b0" alt="Bilibili">
     </a>
     <a href="https://ifdian.net/a/wormwaker697">
-      <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Bilibili">
+      <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Afdian">
     </a>
   </p>
 </h1>
@@ -95,7 +94,7 @@ ____________________________
 
 Best Ghost Client for Windows: Using Jackal Client to Defeat Your Opponents🥰
 
-JACKAL CLIENT is a free hacker client designed for Windows, including 175+ awesome modules, ranging from Combat, Window, Process, File, Registry, Render to Misc. Everything is possible with this client, so overwhelm your system in your way!😋
+J̷a̷c̷k̷a̷l̷C̷l̷i̷e̷n̷t̷  is a free hacker client designed for Windows, including 175+ awesome modules, ranging from Combat, Window, Process, File, Registry, Render to Misc. Everything is possible with this client, so overwhelm your system in your way!😋
 
 🍎 Free client
 

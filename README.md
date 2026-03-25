@@ -18,10 +18,14 @@ English | [简体中文](./README-zh-hans-cn.md)
 
 ### Subscribe 
 [@Wormwaker](https://space.bilibili.com/3494361276877525)
-### 's Bilibili Channel and join Wormwaker's QQ Group to get this Client:
-### 196218959
+### 's Bilibili Channel
+### Please check:
+[Official Website](https://www.wormwake.com/jackalclient)
+[Documentation](https://doc.wormwake.com)
 
-### Bilibili Channel Link
+### Bilibili Videos
+[Re: 当我把 Vape 开到 Windows 上？ ft.JackalClientAlpha](https://www.bilibili.com/video/BV12sPCzfEyZ)
+find out more:
 [https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082)
 
 ### Project Start Date 2024/8/10

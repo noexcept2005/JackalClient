@@ -36,6 +36,13 @@
     <a href="https://ifdian.net/a/wormwaker697">
       <img src="https://img.shields.io/badge/Afdian-Wormwaker-white?logo=afdian&labelColor=purple" alt="Afdian">
     </a>
+    <br></br>
+    <a href="https://github.com/JackalClient/JackalClient">
+      <img src="https://img.shields.io/github/stars/JackalClient/JackalClient?style=for-the-badge" alt="Stars">
+    </a>
+    <a href="https://github.com/JackalClient/JackalClient/releases">
+      <img src="https://img.shields.io/github/downloads/JackalClient/JackalClient/total?style=for-the-badge" alt="Downloads">
+    </a>
   </p>
 </h1>
 

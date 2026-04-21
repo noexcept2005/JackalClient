@@ -101,10 +101,11 @@ find out more:
 All modules are classified into 10 categories: Combat, Window, Process, Registry, File, Control, Render, Web, Misc, Driver
 
 Nice modules you can't miss:
-**AntiCapture:** Makes client window invisible from screenrecording software.
-**ClearPin:** Clear Windows PIN.
-**Gatekeeper:** Intercept some winlogin events, like Ctrl+Alt+Delete, Shutdown, Reboot, Logoff etc.
-**TrustedInstaller:** Get trustedinstaller privilege.
+
+-**AntiCapture:** Makes client window invisible from screenrecording software.
+-**ClearPin:** Clear Windows PIN.
+-**Gatekeeper:** Intercept some winlogin events, like Ctrl+Alt+Delete, Shutdown, Reboot, Logoff etc.
+-**TrustedInstaller:** Get trustedinstaller privilege.
 **WindowHighlight:** Draw a rectangle on the activated window and a dark background beneath it.
 **OpacityChanger:** Allows you to adjust window opacity using mouse wheel.
 **ConsoleESP:** Monitor console changes. It can also real-time output content of other consoles.

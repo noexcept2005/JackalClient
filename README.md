@@ -74,7 +74,7 @@ find out more:
 
 ### Project Start Date 2024/8/10
 
-##### Thx 4 ur support
+Thanks for your support
 
 <picture>
   <source

@@ -69,6 +69,9 @@
 ### B站合集链接
 [https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082)
 
+### QQ 频道 
+点击链接加入腾讯频道【JackalClient】：[https://pd.qq.com/s/8s4nsdc81?b=9](https://pd.qq.com/s/8s4nsdc81?b=9)
+
 ### 项目开工日期 2024/8/10
 
 蟹蟹支持

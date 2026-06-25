@@ -72,6 +72,10 @@ English | [简体中文](./README-zh-hans-cn.md)
 find out more:
 [https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082](https://space.bilibili.com/3494361276877525/channel/collectiondetail?sid=3986082)
 
+
+### QQ Channel: 
+点击链接加入腾讯频道【JackalClient】：[https://pd.qq.com/s/8s4nsdc81?b=9](https://pd.qq.com/s/8s4nsdc81?b=9)
+
 ### Project Start Date 2024/8/10
 
 Thanks for your support

@@ -49,6 +49,7 @@
 ### 免费的 Windows 黑客端 （部分开源，界面部分）
 
 ### 这并非是一个 Minecraft 作弊端，只是视觉模仿。
+### 这个项目并非完整开源，此仓库仅作下载渠道，且项目仍在更新中。
 
 <img width="1280" height="760" alt="v0 6a" src="https://github.com/user-attachments/assets/e352dee6-32e3-4336-b1ee-9028d7501c6e" />
 <img width="1280" height="761" alt="hacker_style" src="https://github.com/user-attachments/assets/71e617d3-b1ad-472f-b088-d3bd478d8c28" />

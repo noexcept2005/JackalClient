@@ -55,6 +55,7 @@
 <img width="1280" height="757" alt="vape-style" src="https://github.com/user-attachments/assets/556551db-bb9b-43cd-90b4-9641d125695f" />
 <img width="1264" height="752" alt="neverlose-style" src="https://github.com/user-attachments/assets/c4bdf775-c941-4ad4-92ce-ae3103360027" />
 
+### 解压密码：Wormwake
 
 ### B站关注
 [@Wormwaker](https://space.bilibili.com/3494361276877525)

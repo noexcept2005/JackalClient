@@ -48,7 +48,8 @@ English | [简体中文](./README-zh-hans-cn.md)
 
 ### a free Hacker Client for WINDOWS (Partial Source Code, esp. UI)
 
-### It's not a Minecraft Ghost Client XD |O|
+### It's not a Minecraft Ghost Client XD
+### This project is not fully open-source. The repo serves solely as a download channel, and the project is still under active development.
 
 ### Just looks like
 

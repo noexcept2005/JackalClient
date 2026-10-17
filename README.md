@@ -167,7 +167,7 @@ Nice modules you can't miss:
 
 ## Premium Subscription
 
-- You can upgrade your client to PRO edition if you like, which has a lot of unique *options, modules and commands* and a faster update. It also has a **Neverlose-styled** GUI.
+- You can upgrade your client to PRO edition if you like, which has a lot of unique *options, modules and commands* and a faster update. 
 - Check it out: ![Get Jackal Pro](https://afdian.com/item/1eda4ca6ca2511f0a7ae52540025c377)
 
 
